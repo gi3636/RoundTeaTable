@@ -1,7 +1,8 @@
 package com.fg.roundteatable.mapper;
 
-import com.fg.roundteatable.entity.Vlog;
+import com.fg.roundteatable.entity.Video;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author FG
  * @since 2022-01-16
  */
-public interface VlogMapper extends BaseMapper<Vlog> {
+@Repository
+public interface VideoMapper extends BaseMapper<Video> {
 
 }

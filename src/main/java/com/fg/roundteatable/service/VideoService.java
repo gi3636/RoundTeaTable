@@ -1,6 +1,6 @@
 package com.fg.roundteatable.service;
 
-import com.fg.roundteatable.entity.Vlog;
+import com.fg.roundteatable.entity.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author FG
  * @since 2022-01-16
  */
-public interface VlogService extends IService<Vlog> {
+public interface VideoService extends IService<Video> {
 
+    public Video getVideoByVideoId(String videoId);
 }

@@ -1,5 +1,7 @@
 package com.fg.roundteatable.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fg.roundteatable.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,4 +17,5 @@ public interface UserService extends IService<User> {
 
     User getByUsername(String username);
 
+    IPage<User> selectPage(Page<User> pageParam, User user);
 }

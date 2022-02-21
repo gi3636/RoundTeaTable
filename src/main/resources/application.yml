@@ -69,12 +69,12 @@ knife4j:
 aliyun:
   oss:
     endpoint: oss-cn-beijing.aliyuncs.com
-    keyid: LTAI5t81dCcqTbYWenM9ChXP
-    keysecret: 1Hf9D4y3354mnJL8HiAl8vgQmx9M5v
+    keyid: LTAI5tFeHEvGrfLwpA2hJxhX
+    keysecret: pD0nHpS9js7AZNGwhiUrh1VLU6BF3U
     #bucket可以在控制台创建，也可以使用java代码创建
     bucketname: roundteatable-video-bucket
   vod:
-    keyid: LTAI5t81dCcqTbYWenM9ChXP
-    keysecret: 1Hf9D4y3354mnJL8HiAl8vgQmx9M5v
+    keyid: LTAI5tFeHEvGrfLwpA2hJxhX
+    keysecret: pD0nHpS9js7AZNGwhiUrh1VLU6BF3U
     templateGroupId: 5969d075d72bebf65b39670f019ed6ed #转码模板组id
     workflowId: b2cde7eaf99a895b89ab1a88abee0a25 #工作流id

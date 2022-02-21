@@ -59,7 +59,7 @@ public class LoginController {
         String token = JwtUtils.genToken(jwtInfo);
         //redisTemplate.opsForValue().set("login::"+username,token);
         redisUtils.set(RedisKeyEnum.OAUTH_APP_TOKEN.keyBuilder(String.valueOf(jwtInfo.getId())), JSONObject.toJSONString(jwtInfo), 60 * 60 * 24);
-        return new ResultVo(ResultCode.LOGIN_SUCCESS).data("token", token);
+        return new ResultVo(ResultCode.SUCCESS).data("token", token);
     }
 
     @ApiOperation("注册")
@@ -69,7 +69,7 @@ public class LoginController {
         String password = registerForm.getPassword();
 
         if (StringUtils.isBlank(username) || StringUtils.isBlank(password)){
-            throw GlobalException.from(ResultCode.PARAMS_ERROR);
+            throw GlobalException.from(ResultCode.REGISTER_ERROR);
         }
 
         if (userService.getByUsername(username) != null){
@@ -80,6 +80,6 @@ public class LoginController {
         user.setUsername(username);
         user.setPassword(MD5.encrypt(password));
         userService.save(user);
-        return new ResultVo(ResultCode.REGISTER_SUCCESS);
+        return new ResultVo(ResultCode.SUCCESS);
     }
 }

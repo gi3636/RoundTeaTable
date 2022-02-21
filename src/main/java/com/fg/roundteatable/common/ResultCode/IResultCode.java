@@ -7,7 +7,8 @@ package com.fg.roundteatable.common.ResultCode;
  */
 public interface IResultCode {
 
+    Boolean getSuccess();
     Integer getCode();
 
-    String getMsg();
+    String getMessage();
 }

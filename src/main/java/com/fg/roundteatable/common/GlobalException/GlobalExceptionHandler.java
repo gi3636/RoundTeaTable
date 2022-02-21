@@ -37,6 +37,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(GlobalException.class)
     public ResultVo error(GlobalException e) {
         log.error("异常信息：{}", e);
-        return ResultVo.error().code(e.getCode()).msg(e.getMsg());
+        return ResultVo.error().code(e.getCode()).msg(e.getMessage());
     }
 }

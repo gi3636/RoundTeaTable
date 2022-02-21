@@ -29,45 +29,33 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("经过预先处理");
         String token = request.getHeader("token");
-        System.out.println("token : " + token);
         String requestURI = request.getRequestURI().replaceAll("/+", "/");
         log.info("requestURI: {}", requestURI);
         int interval = request.getSession().getMaxInactiveInterval();
         System.out.println("session过期时间(s):" + interval);
-        System.out.println("handler:"+handler);
         //判断是否获是swagger api的资料
         if(!(handler instanceof HandlerMethod)){
             return true;
         }
         HandlerMethod handlerMethod=(HandlerMethod)handler;
-        System.out.println("handle拿到的类是："+handlerMethod.getBean().getClass().getName());
-        System.out.println("handle拿到的类是否是swagger的控制器类："+handlerMethod.getBean().getClass().getName().equals("springfox.documentation.swagger.web.ApiResourceController"));
-
         //判断如果请求的类是swagger的控制器，直接通行。
         if(handlerMethod.getBean().getClass().getName().equals("springfox.documentation.swagger.web.ApiResourceController")){
-            return  true;
+            return true;
         }
-
         //验证token
         if (StringUtils.isBlank(token)) {
             throw GlobalException.from(ResultCode.AUTH_FAIL);
         }
-
         if (!JwtUtils.checkToken(token)) {
             throw GlobalException.from(ResultCode.AUTH_FAIL);
         }
-
         Integer id = JwtUtils.getIdByJwtToken(request);
-
         //用户id 放到上下文，可以当前请求进行传递
         System.out.println("存储：" + SessionContext.USER_ID_KEY);
         request.setAttribute(SessionContext.USER_ID_KEY, id);
         System.out.println("预处理成功");
         System.out.println("id :" + id);
-
-
         return true;
     }
 

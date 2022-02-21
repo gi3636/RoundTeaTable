@@ -1,7 +1,6 @@
 package com.fg.roundteatable.interceptor;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -50,7 +49,7 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //registry.addInterceptor(loginInterceptor())
-        //        //.addPathPatterns("/**")
+        //        .addPathPatterns("/**")
         //        .excludePathPatterns("/")
         //        .excludePathPatterns("/login")
         //        .excludePathPatterns("/login2")

@@ -1,18 +1,13 @@
 package com.fg.roundteatable.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotation.Version;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -24,9 +19,9 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("tbl_vlog")
-@ApiModel(value="Vlog对象", description="短视频表")
-public class Vlog implements Serializable {
+@TableName("tbl_video")
+@ApiModel(value="video对象", description="短视频表")
+public class Video implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,7 +29,10 @@ public class Vlog implements Serializable {
     private String id;
 
     @ApiModelProperty(value = "对应用户表id;vlog视频发布者")
-    private String vlogerId;
+    private String userId;
+
+    @ApiModelProperty(value = "视频存放id")
+    private  String videoId ;
 
     @ApiModelProperty(value = "视频播放地址")
     private String url;

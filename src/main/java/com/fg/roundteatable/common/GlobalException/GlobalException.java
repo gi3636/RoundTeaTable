@@ -1,6 +1,7 @@
 package com.fg.roundteatable.common.GlobalException;
 
 import com.fg.roundteatable.common.ResultCode.IResultCode;
+import com.fg.roundteatable.common.ResultCode.ResultCode;
 import lombok.Data;
 
 /**
@@ -10,24 +11,46 @@ import lombok.Data;
  */
 @Data
 public class GlobalException extends RuntimeException {
+    private Boolean success;
 
     private Integer code;
 
-    private String msg;
+    private String message;
 
-    private GlobalException(Integer code, String msg) {
-        super(msg);
-        this.code = code;
-        this.msg = msg;
+    private GlobalException(IResultCode resultCode) {
+        super(resultCode.getMessage());
+        this.success = resultCode.getSuccess();
+        this.code = resultCode.getCode();
+        this.message = resultCode.getMessage();
     }
 
-    private GlobalException(String msg) {
-        super(msg);
-        this.msg = msg;
+
+    private GlobalException(Integer code, String message) {
+        super(message);
+        this.code = code;
+    }
+
+    private GlobalException(Boolean success,Integer code, String message) {
+        super(message);
+        this.message = message;
+        this.success = success;
+        this.code = code;
+    }
+
+
+    public GlobalException(String message) {
+        super(message);
+        this.message = message;
+    }
+
+    public GlobalException(ResultCode resultCode) {
+        super(resultCode.getMessage());
+        this.success =resultCode.getSuccess();
+        this.code = resultCode.getCode();
     }
 
     public static GlobalException from(IResultCode resultCode) {
-        GlobalException globalException = new GlobalException(resultCode.getCode(), resultCode.getMsg());
+        GlobalException globalException = new GlobalException(resultCode.getSuccess(),resultCode.getCode(), resultCode.getMessage());
         return globalException;
     }
 
