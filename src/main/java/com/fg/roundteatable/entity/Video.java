@@ -50,10 +50,10 @@ public class Video implements Serializable {
     private Integer height;
 
     @ApiModelProperty(value = "点赞总数")
-    private Integer likeCounts;
+    private Integer likeCount;
 
     @ApiModelProperty(value = "评论总数")
-    private Integer commentsCounts;
+    private Integer commentsCount;
 
     @ApiModelProperty(value = "是否私密;0为公开，1为私密，用户可以设置私密，如此可以不公开给比人看")
     private Integer isPrivate;
@@ -79,5 +79,9 @@ public class Video implements Serializable {
     @ApiModelProperty(value = "理由")
     private String reason;
 
+    @ApiModelProperty(value = "访问次数")
+    private Integer linkCount;
 
+    @ApiModelProperty(value = "时长")
+    private String duration;
 }

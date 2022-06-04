@@ -57,7 +57,7 @@ public class LoginController {
         jwtInfo.setUsername(user.getUsername());
         jwtInfo.setAvatar(user.getAvatar());
         String token = JwtUtils.genToken(jwtInfo);
-        //redisTemplate.opsForValue().set("login::"+username,token);
+        // redisUtils.set(RedisKeyEnum.OAUTH_APP_TOKEN.keyBuilder(String.valueOf(jwtInfo.getId())), JSONObject.toJSONString(jwtInfo), 60 * 60 * 24);
         redisUtils.set(RedisKeyEnum.OAUTH_APP_TOKEN.keyBuilder(String.valueOf(jwtInfo.getId())), JSONObject.toJSONString(jwtInfo), 60 * 60 * 24);
         return new ResultVo(ResultCode.SUCCESS).data("token", token);
     }

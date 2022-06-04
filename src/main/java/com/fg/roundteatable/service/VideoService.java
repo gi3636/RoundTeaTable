@@ -1,7 +1,9 @@
 package com.fg.roundteatable.service;
 
-import com.fg.roundteatable.entity.Video;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fg.roundteatable.entity.Video;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,5 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface VideoService extends IService<Video> {
 
-    public Video getVideoByVideoId(String videoId);
+     Video getVideoByVideoId(String videoId);
+
+     List<Video> getVideoListByUserId(String userId);
 }

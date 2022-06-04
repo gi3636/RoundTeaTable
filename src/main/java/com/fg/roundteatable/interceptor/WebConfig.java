@@ -16,8 +16,6 @@ import org.springframework.web.util.pattern.PathPatternParser;
 @Configuration
 public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 
-
-
     private ApplicationContext applicationContext;
 
     public WebConfig() {
@@ -48,19 +46,19 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //registry.addInterceptor(loginInterceptor())
-        //        .addPathPatterns("/**")
-        //        .excludePathPatterns("/")
-        //        .excludePathPatterns("/login")
-        //        .excludePathPatterns("/login2")
-        //        .excludePathPatterns("/chatroom")
-        //        .excludePathPatterns("/register")
-        //        .excludePathPatterns("/error")
-        //        .excludePathPatterns("/test/**")
-        //        .excludePathPatterns("/webjars/**")
-        //        .excludePathPatterns("/doc.html")
-        //        .excludePathPatterns("/show/**")
-        //        .excludePathPatterns("/css/**", "/js/**", "/img/**", "/fontawesome-free-5.11.2-web/**", "/favicon.ico");
+        registry.addInterceptor(loginInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/")
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/login2")
+                .excludePathPatterns("/chatroom")
+                .excludePathPatterns("/register")
+                .excludePathPatterns("/error")
+                .excludePathPatterns("/test/**")
+                .excludePathPatterns("/webjars/**")
+                .excludePathPatterns("/doc.html")
+                .excludePathPatterns("/show/**")
+                .excludePathPatterns("/css/**", "/js/**", "/img/**", "/fontawesome-free-5.11.2-web/**", "/favicon.ico");
     }
 
     //

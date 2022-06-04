@@ -50,7 +50,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (!JwtUtils.checkToken(token)) {
             throw GlobalException.from(ResultCode.AUTH_FAIL);
         }
-        Integer id = JwtUtils.getIdByJwtToken(request);
+        String id = JwtUtils.getIdByJwtToken(request);
         //用户id 放到上下文，可以当前请求进行传递
         System.out.println("存储：" + SessionContext.USER_ID_KEY);
         request.setAttribute(SessionContext.USER_ID_KEY, id);

@@ -1,8 +1,5 @@
 package com.fg.roundteatable.controller;
 
-import com.aliyun.vod.upload.impl.UploadVideoImpl;
-import com.aliyun.vod.upload.req.UploadStreamRequest;
-import com.aliyun.vod.upload.resp.UploadStreamResponse;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
@@ -15,13 +12,11 @@ import com.fg.roundteatable.config.VodProperties;
 import com.fg.roundteatable.entity.Video;
 import com.fg.roundteatable.service.VideoService;
 import com.fg.roundteatable.util.AliyunVodSDKUtils;
-import com.fg.roundteatable.util.SessionContext;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
 import java.util.List;
 
 
@@ -45,97 +40,105 @@ public class VideoController {
     private VodProperties vodProperties;
 
 
-    @GetMapping("/test1")
-    public String test1() {
-        return vodProperties.toString();
-    }
 
-    @PostMapping("/upload/video")
-    public String uploadVideo(MultipartFile file) {
-        Video video = new Video();
-        SessionContext sessionContext = new SessionContext();
-        //JwtInfo jwtInfo = sessionContext.getJwtInfo();
-        try {
-            //设置文件名字
-            String fileName = file.getOriginalFilename();
-            //设置title  (上传成功以后显示的名字)
-            String title = fileName.substring(0, fileName.lastIndexOf("."));
-            //设置inputStream
-            InputStream inputStream = file.getInputStream();
-            UploadStreamRequest request = new UploadStreamRequest(vodProperties.getKeyId(), vodProperties.getKeySecret(), title, fileName, inputStream);
-            /* 点播服务接入点 */
-            request.setApiRegionId("cn-beijing");
-            UploadVideoImpl uploader = new UploadVideoImpl();
-            UploadStreamResponse response = uploader.uploadStream(request);
-            if (response.isSuccess()) {
-                //上传成功
-                System.out.println("response"+ response);
-                System.out.print("VideoId = " + response.getVideoId() + "\n");
-                //存储数据
-                //video.setUserId(jwtInfo.getId());
-                video.setVideoId(response.getVideoId());
-                getVideo(response.getVideoId());
-                return response.getVideoId();
-            } else { //如果设置回调URL无效，不影响视频上传，可以返回VideoId同时会返回错误码。其他情况上传失败时，VideoId为空，此时需要根据返回错误码分析具体错误原因
-                System.out.print("VideoId=" + response.getVideoId() + "\n");
-                System.out.print("ErrorCode=" + response.getCode() + "\n");
-                System.out.print("ErrorMessage=" + response.getMessage() + "\n");
-                log.error("阿里云上传失败：" + response.getVideoId() + "-" + response.getCode() + "-" + response.getMessage());
-                return response.getVideoId();
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
-    }
+    // @ApiOperation("上传影片")
+    // @PostMapping("/upload/video")
+    // public String uploadVideo(MultipartFile file) {
+    //     Video video = new Video();
+    //     SessionContext sessionContext = new SessionContext();
+    //     JwtInfo jwtInfo = sessionContext.getJwtInfo();
+    //     try {
+    //         //1,获取文件
+    //         String fileName = file.getOriginalFilename();
+    //         //设置title  (上传成功以后显示的名字)
+    //         String title = fileName.substring(0, fileName.lastIndexOf("."));
+    //         InputStream inputStream = file.getInputStream();
+    //         UploadStreamRequest request = new UploadStreamRequest(vodProperties.getKeyId(), vodProperties.getKeySecret(), title, fileName, inputStream);
+    //         /* 点播服务接入点 */
+    //         request.setApiRegionId("cn-beijing");
+    //         //2.上传去服务器
+    //         UploadVideoImpl uploader = new UploadVideoImpl();
+    //         UploadStreamResponse response = uploader.uploadStream(request);
+    //         if (response.isSuccess()) {
+    //             //3.获得返回videoId
+    //             System.out.println("上传的影片成功！VideoId:"+response.getVideoId());
+    //             //4.存储数据
+    //             video.setUserId(jwtInfo.getId());
+    //             video.setVideoId(response.getVideoId());
+    //             videoService.save(video);
+    //             //5.返回videoId
+    //             return response.getVideoId();
+    //         } else { //如果设置回调URL无效，不影响视频上传，可以返回VideoId同时会返回错误码。其他情况上传失败时，VideoId为空，此时需要根据返回错误码分析具体错误原因
+    //             System.out.print("VideoId=" + response.getVideoId() + "\n");
+    //             System.out.print("ErrorCode=" + response.getCode() + "\n");
+    //             System.out.print("ErrorMessage=" + response.getMessage() + "\n");
+    //             log.error("阿里云上传失败：" + response.getVideoId() + "-" + response.getCode() + "-" + response.getMessage());
+    //             return response.getVideoId();
+    //         }
+    //     } catch (Exception e) {
+    //         log.error(e.getMessage());
+    //         e.printStackTrace();
+    //         return null;
+    //     }
+    // }
 
 
+    @ApiOperation("获取影片资料")
     @GetMapping("getVideo/{videoId}")
-    public GetPlayInfoResponse.VideoBase getVideo(@PathVariable String videoId) throws ClientException {
+    public ResultVo getVideo(@PathVariable String videoId) throws ClientException {
         //初始化client对象
         DefaultAcsClient client = AliyunVodSDKUtils.initVodClient(
                 vodProperties.getKeyId(),
                 vodProperties.getKeySecret());
         GetPlayInfoRequest request = new GetPlayInfoRequest();
-        request.setVideoId(videoId);
-        GetPlayInfoResponse response = client.getAcsResponse(request);
         Video video = videoService.getVideoByVideoId(videoId);
-
+        //1.设置请求
+        request.setVideoId(videoId);
+        //2.发送请求
+        GetPlayInfoResponse response = client.getAcsResponse(request);
         try {
-            String url = "";
             List<GetPlayInfoResponse.PlayInfo> playInfoList = response.getPlayInfoList();
             //播放地址
             for (GetPlayInfoResponse.PlayInfo playInfo : playInfoList) {
+                //3.根据videoId获取影片链接
                 System.out.print("PlayInfo.PlayURL = " + playInfo.getPlayURL() + "\n");
-                url = playInfo.getPlayURL();
+                //如果第一次访问就把查找到的信息存储到数据库里
+                if (video.getLinkCount() == 0 ){
+                    video.setWidth(Math.toIntExact(playInfo.getWidth()));
+                    video.setHeight(Math.toIntExact(playInfo.getHeight()));
+                    video.setDuration(playInfo.getDuration());
+                }
+                //影片url每次访问时更新
+                video.setUrl(playInfo.getPlayURL());
             }
-            if (video == null){
-                video.setVideoId(videoId);
-            }else{
-                video.setUrl(url);
-            }
-            System.out.print("VideoBase.Title = " + response.getVideoBase().getTitle() + "\n");
 
-            return response.getVideoBase();
+            //如果第一次访问就把查找到的信息存储到数据库里
+            if (video.getLinkCount() == 0){
+                video.setTitle(response.getVideoBase().getTitle());
+                video.setCover(response.getVideoBase().getCoverURL());
+            }
+            video.setLinkCount(video.getLinkCount()+1);
+            //更新影片数据
+            videoService.updateById(video);
+            //3.返回影片数据
+            return ResultVo.ok().data("video",video);
         } catch (Exception e) {
             System.err.print("ErrorMessage = " + e.getLocalizedMessage());
             throw GlobalException.from(ResultCode.FILE_UPLOAD_ERROR);
         }
     }
 
-    @GetMapping("getVideoList")
-    public ResultVo getVideoList(){
-        return null;
-    }
-
-    @GetMapping("getAuth")
-    public ResultVo getAuth() {
-        return null;
+    @ApiOperation("获取用户影片")
+    @GetMapping("getUserVideoList/{userId}")
+    public ResultVo getUserVideoList(@PathVariable String userId){
+        List<Video> videoList = videoService.getVideoListByUserId(userId);
+        return ResultVo.ok().data("videoList",videoList);
     }
 
 
-    @PostMapping("delete/{videoId}")
+
+    @ApiOperation("删除影片")
+    @DeleteMapping("delete/{videoId}")
     public void removeVideo(@PathVariable String videoId) {
         try {
             //初始化client对象
@@ -161,10 +164,9 @@ public class VideoController {
         return ResultVo.ok().data("测试", "测试");
     }
 
-
-    @DeleteMapping("delete")
-    public ResultVo deleteVideo() {
-        return ResultVo.ok();
+    @GetMapping("getVideoList")
+    public ResultVo getVideoList(){
+        return null;
     }
 
 
