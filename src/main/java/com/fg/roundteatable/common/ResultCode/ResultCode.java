@@ -29,6 +29,7 @@ public enum ResultCode implements IResultCode {
     FETCH_VIDEO_UPLOADAUTH_ERROR(false, 22004, "获取上传地址和凭证失败"),
     REFRESH_VIDEO_UPLOADAUTH_ERROR(false, 22005, "刷新上传地址和凭证失败"),
     FETCH_PLAYAUTH_ERROR(false, 22006, "获取播放凭证失败"),
+    GET_STS_TOKEN_ERROR(false,22007,"获取StsToken错误"),
 
     URL_ENCODE_ERROR(false, 23001, "URL编码失败"),
     ILLEGAL_CALLBACK_REQUEST_ERROR(false, 23002, "非法回调请求"),
