@@ -23,10 +23,10 @@ spring:
 
   #redis配置
   redis:
-    host: 47.93.248.2
+    host: 127.0.0.1
     port: 6379
     database: 0
-    password: 123456 #默认为空
+#    password: 123456 #默认为空
     lettuce:
       pool:
         max-active: 20  #最大连接数，负值表示没有限制，默认8
@@ -67,14 +67,15 @@ knife4j:
 #    root: INFO
 
 aliyun:
-  oss:
-    endpoint: oss-cn-beijing.aliyuncs.com
-    keyid: LTAI5tFeHEvGrfLwpA2hJxhX
-    keysecret: pD0nHpS9js7AZNGwhiUrh1VLU6BF3U
+  sts:
+    endpoint: sts.cn-hangzhou.aliyuncs.com
+    ki: LTAI5t6QoGkprnCHxVprT6j2
+    ks: q7qQ9W7WDg0mfHR4IrtdIqgcuqbdHt
     #bucket可以在控制台创建，也可以使用java代码创建
-    bucketname: roundteatable-video-bucket
+    bucketname: roundteatable-file-buckets
+    roleArn: acs:ram::1961627345815863:role/ramosstest
   vod:
-    keyid: LTAI5tFeHEvGrfLwpA2hJxhX
-    keysecret: pD0nHpS9js7AZNGwhiUrh1VLU6BF3U
+    ki: LTAI5tFeHEvGrfLwpA2hJxhX
+    ks: pD0nHpS9js7AZNGwhiUrh1VLU6BF3U
     templateGroupId: 5969d075d72bebf65b39670f019ed6ed #转码模板组id
     workflowId: b2cde7eaf99a895b89ab1a88abee0a25 #工作流id

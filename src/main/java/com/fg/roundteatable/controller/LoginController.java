@@ -32,9 +32,8 @@ public class LoginController {
     private UserService userService;
 
     @ApiOperation("登入")
-    @PostMapping ("login")
-    public ResultVo login(@RequestBody LoginForm loginForm){
-        System.out.println(loginForm);
+    @PostMapping("login")
+    public ResultVo login(@RequestBody LoginForm loginForm) {
         String username = loginForm.getUsername().trim();
         String password = loginForm.getPassword().trim();
         //非空验证
@@ -47,7 +46,7 @@ public class LoginController {
             throw GlobalException.from(ResultCode.LOGIN_ERROR);
         }
         //密码验证
-        if (!MD5.encrypt(password).equals(user.getPassword())){
+        if (!MD5.encrypt(password).equals(user.getPassword())) {
             throw GlobalException.from(ResultCode.LOGIN_ERROR);
         }
 
@@ -59,21 +58,24 @@ public class LoginController {
         String token = JwtUtils.genToken(jwtInfo);
         // redisUtils.set(RedisKeyEnum.OAUTH_APP_TOKEN.keyBuilder(String.valueOf(jwtInfo.getId())), JSONObject.toJSONString(jwtInfo), 60 * 60 * 24);
         redisUtils.set(RedisKeyEnum.OAUTH_APP_TOKEN.keyBuilder(String.valueOf(jwtInfo.getId())), JSONObject.toJSONString(jwtInfo), 60 * 60 * 24);
-        return new ResultVo(ResultCode.SUCCESS).data("token", token);
+        return new ResultVo(ResultCode.SUCCESS).data("token", token).data("user",jwtInfo);
     }
 
     @ApiOperation("注册")
     @PostMapping("register")
-    public ResultVo register(@RequestBody RegisterForm registerForm){
+    public ResultVo register(@RequestBody RegisterForm registerForm) {
         String username = registerForm.getUsername();
         String password = registerForm.getPassword();
-
-        if (StringUtils.isBlank(username) || StringUtils.isBlank(password)){
+        String secondPassword = registerForm.getSecondPassword();
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password) || StringUtils.isBlank(secondPassword)) {
             throw GlobalException.from(ResultCode.REGISTER_ERROR);
         }
+        if (!password.equals(secondPassword)) {
+            throw GlobalException.from(ResultCode.PASSWORD_NOT_SAME);
+        }
 
-        if (userService.getByUsername(username) != null){
-            throw  GlobalException.from(ResultCode.ACCOUNT_EXIST);
+        if (userService.getByUsername(username) != null) {
+            throw GlobalException.from(ResultCode.ACCOUNT_EXIST);
         }
 
         User user = new User();

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix="aliyun.vod")
 public class VodProperties {
 
-    private String keyId;
-    private String keySecret;
+    private String ki;
+    private String ks;
     private String templateGroupId;
     private String workflowId;
 }

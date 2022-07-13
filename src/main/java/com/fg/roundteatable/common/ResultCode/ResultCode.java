@@ -37,6 +37,7 @@ public enum ResultCode implements IResultCode {
     LOGIN_ERROR(false, 23005, "登录失败"),
     REGISTER_ERROR(false,23006,"注册失败"),
     ACCOUNT_EXIST(false,23007,"用户已存在"),
+    PASSWORD_NOT_SAME(false,23008,"密码不一致"),
 
     COMMENT_EMPTY(false, 24006, "评论内容必须填写"),
 

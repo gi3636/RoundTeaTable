@@ -88,8 +88,8 @@ public class VideoController {
     public ResultVo getVideo(@PathVariable String videoId) throws ClientException {
         //初始化client对象
         DefaultAcsClient client = AliyunVodSDKUtils.initVodClient(
-                vodProperties.getKeyId(),
-                vodProperties.getKeySecret());
+                vodProperties.getKi(),
+                vodProperties.getKs());
         GetPlayInfoRequest request = new GetPlayInfoRequest();
         Video video = videoService.getVideoByVideoId(videoId);
         //1.设置请求
@@ -143,8 +143,8 @@ public class VideoController {
         try {
             //初始化client对象
             DefaultAcsClient client = AliyunVodSDKUtils.initVodClient(
-                    vodProperties.getKeyId(),
-                    vodProperties.getKeySecret());
+                    vodProperties.getKi(),
+                    vodProperties.getKs());
 
             //创建request对象
             DeleteVideoRequest request = new DeleteVideoRequest();
