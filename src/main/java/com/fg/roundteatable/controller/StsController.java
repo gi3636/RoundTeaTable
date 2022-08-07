@@ -52,4 +52,6 @@ public class StsController {
             throw GlobalException.from(ResultCode.GET_STS_TOKEN_ERROR);
         }
     }
+
+
 }

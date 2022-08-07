@@ -126,7 +126,7 @@
             <artifactId>velocity-engine-core</artifactId>
             <version>2.0</version>
         </dependency>
-<!--        阿里云点播VOD-->
+       <!-- 阿里云点播VOD -->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
@@ -141,11 +141,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.62</version>
-        </dependency>
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-kms</artifactId>
-            <version>2.10.1</version>
         </dependency>
         <dependency>
             <groupId>com.aliyun.oss</groupId>

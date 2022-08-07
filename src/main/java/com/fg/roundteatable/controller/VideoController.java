@@ -2,6 +2,7 @@ package com.fg.roundteatable.controller;
 
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import com.aliyuncs.vod.model.v20170321.GetPlayInfoRequest;
 import com.aliyuncs.vod.model.v20170321.GetPlayInfoResponse;
@@ -10,6 +11,7 @@ import com.fg.roundteatable.common.ResultCode.ResultCode;
 import com.fg.roundteatable.common.ResultVo;
 import com.fg.roundteatable.config.VodProperties;
 import com.fg.roundteatable.entity.Video;
+import com.fg.roundteatable.model.vo.StsToken;
 import com.fg.roundteatable.service.VideoService;
 import com.fg.roundteatable.util.AliyunVodSDKUtils;
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +42,57 @@ public class VideoController {
     private VodProperties vodProperties;
 
 
+    //@ApiOperation("用StsToken 初始化")
+
+    //初始化点播client
+    public DefaultAcsClient initVodClient(StsToken stsToken) {
+        String regionId = "cn-beijing";  // 点播服务接入地域
+        DefaultProfile profile = DefaultProfile.getProfile(regionId, stsToken.getAccessKeyId(), stsToken.getAccessKeySecret(), stsToken.getSecurityToken());
+        DefaultAcsClient client = new DefaultAcsClient(profile);
+        return client;
+    }
+
+    //获取播放地址函数
+    public static GetPlayInfoResponse getPlayInfo(DefaultAcsClient client, String videoId) throws Exception {
+        GetPlayInfoRequest request = new GetPlayInfoRequest();
+        request.setVideoId(videoId);
+        return client.getAcsResponse(request);
+    }
+
+
+    @PostMapping("getPlayInfo/{videoId}")
+    public ResultVo getPlay(@RequestBody StsToken stsToken, @PathVariable String videoId) throws ClientException {
+        DefaultAcsClient client = initVodClient(stsToken);
+        GetPlayInfoResponse response = new GetPlayInfoResponse();
+        String url = "";
+        GetPlayInfoResponse.PlayInfo temp = null;
+        try {
+            response = getPlayInfo(client, videoId);
+            List<GetPlayInfoResponse.PlayInfo> playInfoList = response.getPlayInfoList();
+            //播放地址
+            for (GetPlayInfoResponse.PlayInfo playInfo : playInfoList) {
+                System.out.print("PlayInfo.PlayURL = " + playInfo.getPlayURL() + "\n");
+                System.out.println("playInfo:" + playInfo.toString());
+                temp = playInfo;
+                url = playInfo.getPlayURL();
+            }
+            //Base信息
+            System.out.print("VideoBase.Title = " + response.getVideoBase().getTitle() + "\n");
+        } catch (Exception e) {
+            System.out.print("ErrorMessage = " + e.getLocalizedMessage());
+        }
+        System.out.print("RequestId = " + response.getRequestId() + "\n");
+        //return ResultVo.ok().data("playUrl", url).data("temp", temp).data("videoBase",response.getVideoBase());
+        return ResultVo.ok().data("playUrl", url);
+    }
+
+
+    @ApiOperation("添加视频")
+    @PostMapping("/add/video")
+    public ResultVo addVideo(@RequestBody Video video) {
+        videoService.save(video);
+        return ResultVo.ok();
+    }
 
     // @ApiOperation("上传影片")
     // @PostMapping("/upload/video")
@@ -103,7 +156,7 @@ public class VideoController {
                 //3.根据videoId获取影片链接
                 System.out.print("PlayInfo.PlayURL = " + playInfo.getPlayURL() + "\n");
                 //如果第一次访问就把查找到的信息存储到数据库里
-                if (video.getLinkCount() == 0 ){
+                if (video.getLinkCount() == 0) {
                     video.setWidth(Math.toIntExact(playInfo.getWidth()));
                     video.setHeight(Math.toIntExact(playInfo.getHeight()));
                     video.setDuration(playInfo.getDuration());
@@ -113,15 +166,15 @@ public class VideoController {
             }
 
             //如果第一次访问就把查找到的信息存储到数据库里
-            if (video.getLinkCount() == 0){
+            if (video.getLinkCount() == 0) {
                 video.setTitle(response.getVideoBase().getTitle());
                 video.setCover(response.getVideoBase().getCoverURL());
             }
-            video.setLinkCount(video.getLinkCount()+1);
+            video.setLinkCount(video.getLinkCount() + 1);
             //更新影片数据
             videoService.updateById(video);
             //3.返回影片数据
-            return ResultVo.ok().data("video",video);
+            return ResultVo.ok().data("video", video);
         } catch (Exception e) {
             System.err.print("ErrorMessage = " + e.getLocalizedMessage());
             throw GlobalException.from(ResultCode.FILE_UPLOAD_ERROR);
@@ -130,11 +183,10 @@ public class VideoController {
 
     @ApiOperation("获取用户影片")
     @GetMapping("getUserVideoList/{userId}")
-    public ResultVo getUserVideoList(@PathVariable String userId){
+    public ResultVo getUserVideoList(@PathVariable String userId) {
         List<Video> videoList = videoService.getVideoListByUserId(userId);
-        return ResultVo.ok().data("videoList",videoList);
+        return ResultVo.ok().data("videoList", videoList);
     }
-
 
 
     @ApiOperation("删除影片")
@@ -165,7 +217,7 @@ public class VideoController {
     }
 
     @GetMapping("getVideoList")
-    public ResultVo getVideoList(){
+    public ResultVo getVideoList() {
         return null;
     }
 
