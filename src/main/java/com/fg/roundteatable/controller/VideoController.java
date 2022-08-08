@@ -41,9 +41,6 @@ public class VideoController {
     @Autowired
     private VodProperties vodProperties;
 
-
-    //@ApiOperation("用StsToken 初始化")
-
     //初始化点播client
     public DefaultAcsClient initVodClient(StsToken stsToken) {
         String regionId = "cn-beijing";  // 点播服务接入地域

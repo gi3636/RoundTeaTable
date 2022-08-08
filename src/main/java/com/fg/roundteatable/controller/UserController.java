@@ -4,6 +4,7 @@ package com.fg.roundteatable.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fg.roundteatable.common.ResultVo;
+import com.fg.roundteatable.common.ValidException.UpdateGroup;
 import com.fg.roundteatable.entity.User;
 import com.fg.roundteatable.service.UserService;
 import com.fg.roundteatable.util.MD5;
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -65,7 +67,7 @@ public class UserController {
 
     @ApiOperation("更新用户资料")
     @PostMapping("/update")
-    public ResultVo updateUser(@RequestBody User user) {
+    public ResultVo updateUser(@Validated(UpdateGroup.class) @RequestBody  User user) {
         boolean result = userService.updateById(user);
         if (result) {
             return ResultVo.ok().msg("修改成功");

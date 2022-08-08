@@ -49,6 +49,7 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
         registry.addInterceptor(loginInterceptor())
                 //.addPathPatterns("/**")
                 .excludePathPatterns("/")
+                .excludePathPatterns("/user/**")
                 .excludePathPatterns("/sts/**")
                 .excludePathPatterns("/video/**")
                 .excludePathPatterns("/login")

@@ -21,11 +21,11 @@ public class GlobalExceptionHandler {
     /**
      * 指定出现什么异常执行这个方法
      */
-    @ExceptionHandler(Exception.class)
-    public ResultVo error(Exception e) {
-        e.printStackTrace();
-        return ResultVo.error().msg("服务器又耍流氓了..");
-    }
+    //@ExceptionHandler(Exception.class)
+    //public ResultVo error(Exception e) {
+    //    e.printStackTrace();
+    //    return ResultVo.error().msg("服务器又耍流氓了..");
+    //}
 
 
     /**

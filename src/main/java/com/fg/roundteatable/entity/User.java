@@ -1,20 +1,16 @@
 package com.fg.roundteatable.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotation.Version;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
-
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fg.roundteatable.common.ValidException.AddGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -34,19 +30,22 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "用户;")
-      @TableId(value = "id", type = IdType.ASSIGN_ID)
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
 
     @ApiModelProperty(value = "用户名")
+    @NotBlank(message = "用户名不能为空",groups = {AddGroup.class})
     private String username;
 
     @ApiModelProperty(value = "密码")
+    @NotBlank(message = "密码不能为空",groups = {AddGroup.class})
     private String password;
 
     @ApiModelProperty(value = "手机号")
     private String mobile;
 
     @ApiModelProperty(value = "昵称;媒体号")
+    @NotBlank(message = "昵称不能为空",groups = {AddGroup.class})
     private String nickname;
 
     @ApiModelProperty(value = "媒体号，唯一标识;类似头条号，抖音号，公众号，唯一标识，需要限制修改次数，比如终生1次，每年1次，每半年1次等，可以用于付费修改。")
