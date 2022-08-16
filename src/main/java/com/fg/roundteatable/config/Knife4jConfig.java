@@ -12,6 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 @Configuration
 @EnableSwagger2WebMvc
+//打开网址是 本地地址+doc.html
 public class Knife4jConfig {
 
     @Bean

@@ -62,9 +62,9 @@ mybatis-plus:
 knife4j:
   enable: true
 # 设置日志级别
-#logging:
-#  level:
-#    root: INFO
+logging:
+  level:
+    root: INFO
 
 aliyun:
   sts:
