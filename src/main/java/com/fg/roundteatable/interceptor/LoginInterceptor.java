@@ -30,17 +30,16 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
+        System.out.println("token：" + token);
         String requestURI = request.getRequestURI().replaceAll("/+", "/");
         log.info("requestURI: {}", requestURI);
-        int interval = request.getSession().getMaxInactiveInterval();
-        System.out.println("session过期时间(s):" + interval);
         //判断是否获是swagger api的资料
-        if(!(handler instanceof HandlerMethod)){
+        if (!(handler instanceof HandlerMethod)) {
             return true;
         }
-        HandlerMethod handlerMethod=(HandlerMethod)handler;
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
         //判断如果请求的类是swagger的控制器，直接通行。
-        if(handlerMethod.getBean().getClass().getName().equals("springfox.documentation.swagger.web.ApiResourceController")){
+        if (handlerMethod.getBean().getClass().getName().equals("springfox.documentation.swagger.web.ApiResourceController")) {
             return true;
         }
         //验证token

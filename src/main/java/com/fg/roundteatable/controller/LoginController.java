@@ -66,11 +66,11 @@ public class LoginController {
     public ResultVo register(@RequestBody RegisterForm registerForm) {
         String username = registerForm.getUsername();
         String password = registerForm.getPassword();
-        String secondPassword = registerForm.getSecondPassword();
-        if (StringUtils.isBlank(username) || StringUtils.isBlank(password) || StringUtils.isBlank(secondPassword)) {
+        String confirmPassword = registerForm.getConfirmPassword();
+        if (StringUtils.isBlank(username) || StringUtils.isBlank(password) || StringUtils.isBlank(confirmPassword)) {
             throw GlobalException.from(ResultCode.REGISTER_ERROR);
         }
-        if (!password.equals(secondPassword)) {
+        if (!password.equals(confirmPassword)) {
             throw GlobalException.from(ResultCode.PASSWORD_NOT_SAME);
         }
 

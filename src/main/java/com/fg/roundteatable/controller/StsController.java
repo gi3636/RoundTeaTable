@@ -12,16 +12,18 @@ import com.fg.roundteatable.common.ResultCode.ResultCode;
 import com.fg.roundteatable.common.ResultVo;
 import com.fg.roundteatable.config.StsProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+@CrossOrigin
 @RequestMapping("/sts")
 @RestController
 public class StsController {
 
     @Autowired
     private StsProperties stsProperties;
+
 
     @GetMapping("token")
     public ResultVo getStsToken() {

@@ -55,8 +55,9 @@ public class VideoController {
         request.setVideoId(videoId);
         return client.getAcsResponse(request);
     }
-    @PostMapping("getRecommendVideo")
-    public ResultVo getRecommendVideo(){
+
+    @PostMapping("recommend")
+    public ResultVo getRecommendVideo() {
         return ResultVo.error();
     }
 
@@ -91,6 +92,7 @@ public class VideoController {
     @ApiOperation("添加视频")
     @PostMapping("/add")
     public ResultVo addVideo(@RequestBody Video video) {
+        System.out.println("VIdeo" + video);
         videoService.save(video);
         return ResultVo.ok();
     }
